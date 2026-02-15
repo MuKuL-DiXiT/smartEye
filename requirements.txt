@@ -1,0 +1,4 @@
+# Python requirements for SmartEye
+opencv-python
+pandas
+matplotlib
