@@ -1,65 +1,56 @@
-# SmartEye Project - Progress Summary
+
+# SmartEye Project - Violence Detection System
 
 ## Project Overview
-SmartEye is a video anomaly detection project that processes raw video frames and creates a structured dataset for training machine learning models.
+SmartEye is a video violence detection system. The project processes raw video frames from the RWF-2000 and RLVS datasets, creating structured datasets for training and evaluating machine learning models to detect violent events in videos.
+
 
 ### Project Structure
 ```
 data/
 ├── raw/
-│   ├── Train/         (15 anomaly categories: Abuse, Arrest, Arson, Assault, Burglary, Explosion, Fighting, Normal, RoadAccidents, Robbery, Shooting, Shoplifting, Stealing, Vandalism)
-│   └── Test/          (Similar categories to Train)
+│   ├── RWF-2000/
+│   │   ├── train/
+│   │   │   ├── Fight/
+│   │   │   └── NonFight/
+│   │   ├── val/
+│   │   │   ├── Fight/
+│   │   │   └── NonFight/
+│   │   └── test/
+│   └── RLVS/
+│       ├── train/
+│       │   ├── Fight/
+│       │   └── NonFight/
+│       └── val/
+│           ├── Fight/
+│           └── NonFight/
 └── processed/
-    └── train.csv      (Output CSV with sequence metadata)
+  └── ... (processed data and metadata)
 
 notebook/
-└── pre_processing.ipynb  (Processing script)
+├── Baseline_binary_classification.ipynb
+└── Baseline_TF.ipynb
 ```
 
-## Work Completed
 
-### 1. Notebook Setup (Cell 1)
-✅ **Status:** Complete
-- Configured absolute paths for data directories
-- Initialized key variables:
-  - `SEQ_LEN = 16`: Minimum sequence length (frames) required for a valid sequence
-  - `STRIDE = 8`: Step size for sliding window over frames
-  - `rows = []`: List to store sequence metadata
-  - `sequence_id = 0`: Counter for unique sequence IDs
+## Current Status
 
-**Paths Set:**
-- Input: `/Users/mukuldixit/Desktop/projects/SmartEye/data/raw/Train`
-- Output: `/Users/mukuldixit/Desktop/projects/SmartEye/data/processed/train.csv`
+- **Datasets Used:**
+  - RWF-2000 (Fight/NonFight)
+  - RLVS (Fight/NonFight)
+  - (UCF dataset is no longer used)
 
-### 2. Frame Sequence Processing (Cell 2)
-⚠️ **Status:** Executable but Issue Detected
-- Iterates through each anomaly category folder
-- Labels: 0 for "Normal", 1 for all other anomaly types
-- For each anomaly type folder, scans for image files (.jpg, .png)
-- Creates sliding window sequences with specified SEQ_LEN and STRIDE
-- **Issue:** The `rows` list is empty after execution
+- **Task:** Violence detection in videos (anomaly detection replaced by binary violence classification)
 
-**Possible Causes:**
-1. Directory structure mismatch - code expects images directly in anomaly_type folders
-2. No folders within anomaly categories contain the minimum required frames (16+)
-3. Path traversal is not finding the expected folder hierarchy
+- **Data Preparation:**
+  - Raw video frames are organized by dataset, split, and class (Fight/NonFight)
+  - Scripts and notebooks for preprocessing and baseline experiments are available in the `notebook/` directory
 
-### 3. CSV Output (Cell 3)
-✅ **Status:** Executable
-- Writes sequence metadata to CSV with columns: `sequence_id`, `folder_path`, `start_frame`, `label`
-- Creates output directory if needed
-- Currently outputs empty CSV because `rows` list is empty
+- **Modeling:**
+  - Baseline models for binary classification (violence vs. non-violence) are being developed
+  - Experiments are tracked in the provided notebooks
 
-## Next Steps / Issues to Investigate
-
-1. **Verify data structure**: Check actual folder hierarchy in `data/raw/Train` to confirm image locations
-2. **Debug frame detection**: Add logging to see if folders are being detected and how many frames each contains
-3. **Validate path logic**: Ensure the code is traversing the correct directory levels for images
-4. **Check file formats**: Verify images match the expected .jpg/.png extensions
-
-## Current Variables in Kernel
-- `archive_path`: Root data directory path
-- `data_root`: Training data directory path
-- `SEQ_LEN`, `STRIDE`: Sequence parameters
-- `rows`: Sequence metadata list (currently empty)
-- `sequence_id`: Counter for sequences
+- **Next Steps:**
+  - Continue improving preprocessing and data augmentation
+  - Develop and evaluate advanced models for violence detection
+  - Document results and update this README as progress continues
